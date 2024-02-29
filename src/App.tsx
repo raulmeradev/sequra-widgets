@@ -1,3 +1,4 @@
+import { InstalmentsSelector } from './components/InstalmentsSelector/index'
 import './index.css'
 
 function App() {
@@ -203,7 +204,7 @@ function App() {
                 <label htmlFor="custom-input-number" className="w-full text-gray-700 text-sm font-semibold">
                   Quantity
                 </label>
-                <div className="mt-4 flex flex-row h-10 w-full rounded-md border overflow-hidden relative bg-transparent mt-1 bg-white text-gray-900 shadow-sm">
+                <div className="mt-4 flex flex-row h-10 w-full rounded-md border overflow-hidden relative bg-transparent bg-white text-gray-900 shadow-sm">
                   <div
                     data-action="decrement"
                     className="btn-decrement flex align-center text-gray-700 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer"
@@ -226,10 +227,12 @@ function App() {
 
               <button
                 type="submit"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-900 py-3 px-8 text-base font-medium text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
+                className="mt-10 mb-10 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-900 py-3 px-8 text-base font-medium text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
               >
                 Add to bag
               </button>
+
+              <InstalmentsSelector />
             </div>
 
             <div className="mt-10">
