@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { InstalmentOption } from './types'
+import { useMemo, useRef, useState } from 'react'
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md'
+import { InstalmentOption } from './types'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 type InstalmentListProps = {
   options: InstalmentOption[]
@@ -29,20 +30,10 @@ export const InstalmentList: React.FC<InstalmentListProps> = ({
     setIsOpen(v => !v)
   }
 
-  useEffect(() => {
-    function handlerClickOutSide(evt: MouseEvent | TouchEvent) {
-      const { target } = evt
-      if (isOpen && target && !listRef.current?.contains(target as Node)) setIsOpen(false)
-    }
-
-    document.addEventListener('click', handlerClickOutSide)
-    document.addEventListener('touchend', handlerClickOutSide)
-
-    return () => {
-      document.removeEventListener('click', handlerClickOutSide)
-      document.removeEventListener('touchend', handlerClickOutSide)
-    }
-  }, [isOpen])
+  useClickOutside({
+    element: listRef.current,
+    handler: () => setIsOpen(false),
+  })
 
   return (
     <div className="border-gray-300 bg-white text-blue-950 border rounded-md" ref={listRef}>
