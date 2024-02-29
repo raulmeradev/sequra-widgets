@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { InstalmentOption } from './types'
 import { InstalmentList } from './InstalmentList'
+import { InstalmentsInfoModal } from '../InstalmentsInfoModal'
 
 const instalments: InstalmentOption[] = [
   {
@@ -22,6 +23,7 @@ const instalments: InstalmentOption[] = [
 
 export const InstalmentsSelector: React.FC = () => {
   const [selection, setSelection] = useState<InstalmentOption>()
+  const [showInfo, setShowInfo] = useState(false)
 
   const onSelectOption = (instalment: InstalmentOption) => {
     setSelection(instalment)
@@ -29,15 +31,18 @@ export const InstalmentsSelector: React.FC = () => {
 
   return (
     <div className="border-blue-950 text-blue-950 border rounded p-5 h-32">
-      <div className="flex place-content-between pb-2 text-base font-medium">
+      <div className="flex justify-between pb-2 text-base font-medium">
         <span>Págalo en</span>
-        <button className="font-light">Más info</button>
+        <button onClick={() => setShowInfo(true)} className="font-light">
+          Más info
+        </button>
       </div>
       <div className="relative">
         <div className="absolute w-full">
           <InstalmentList options={instalments} onSelect={onSelectOption} selection={selection} />
         </div>
       </div>
+      {showInfo && <InstalmentsInfoModal formattedFee="3,00 €/mes" onClose={() => setShowInfo(false)} />}
     </div>
   )
 }
