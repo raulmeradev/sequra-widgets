@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md'
 import { InstalmentOption } from '../../domain/types'
+import { saveUserEventUseCase } from '../../domain'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
 type InstalmentListProps = {
@@ -26,7 +27,17 @@ export const InstalmentList: React.FC<InstalmentListProps> = ({
   }, [options, selection, isOpen])
 
   const onItemClick = (item: InstalmentOption) => {
-    isOpen && onSelect(item)
+    if (isOpen) {
+      onSelect(item)
+      saveUserEventUseCase.execute({
+        eventData: {
+          context: 'checkoutWidget',
+          type: 'simulatorInstalmentChanged',
+          selectedInstalment: item.instalment_count,
+        },
+      })
+    }
+
     setIsOpen(v => !v)
   }
 
