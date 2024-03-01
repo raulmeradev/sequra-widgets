@@ -22,7 +22,7 @@ export class HTTPInstalmentsRepository implements InstalmentsRepository {
 
   async getCreditAgreements({ credit }: { credit: number }) {
     const url = new URL(this._config.get<string>('API_BASE_URL') + '/credit_agreements')
-    url.searchParams.set('totalWithTax', `${credit}`)
+    url.searchParams.set('totalWithTax', `${credit * 100}`)
 
     try {
       const response = await fetch(url)

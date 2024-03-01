@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md'
-import { InstalmentOption } from './types'
+import { InstalmentOption } from '../../domain/types'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
 type InstalmentListProps = {
@@ -18,7 +18,7 @@ export const InstalmentList: React.FC<InstalmentListProps> = ({
   const listRef = useRef<HTMLDivElement>(null)
 
   const sortedOptions = useMemo(() => {
-    if (!isOpen) return [selection ?? options[0]]
+    if (!isOpen) return (selection && [selection]) || (options[0] && [options[0]]) || []
     if (!selection) return [...options]
 
     const otherOptions = options.filter(opt => opt.instalment_count !== selection.instalment_count)
