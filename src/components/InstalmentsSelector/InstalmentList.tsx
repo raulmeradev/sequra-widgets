@@ -47,7 +47,11 @@ export const InstalmentList: React.FC<InstalmentListProps> = ({
   })
 
   return (
-    <div className="border-gray-300 bg-white text-blue-950 border rounded-md" ref={listRef}>
+    <div
+      data-testid="instalment-list"
+      className="border-gray-300 bg-white text-blue-950 border rounded-md"
+      ref={listRef}
+    >
       {sortedOptions.map((item, i) => {
         const description = `${item.instalment_count} cuotas de ${item.instalment_total.string}/mes`
         const borderCls = isOpen && i === 0 ? 'border-b border-b-gray-300' : ''

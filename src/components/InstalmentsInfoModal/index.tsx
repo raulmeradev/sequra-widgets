@@ -19,7 +19,7 @@ const detailList: [string, ReactNode][] = [
 export const InstalmentsInfoModal: React.FC<InstalmentsInfoModalProps> = ({ formattedFee, onClose }) => {
   return createPortal(
     <>
-      <div className="fixed w-full h-full left-0 top-0 bg-white opacity-80 z-10"></div>
+      <div data-testid="info-modal" className="fixed w-full h-full left-0 top-0 bg-white opacity-80 z-10"></div>
       <div onClick={() => onClose()} className="fixed w-full h-full left-0 top-0 grid place-items-center z-20 ">
         <div
           onClick={ev => ev.stopPropagation()}
