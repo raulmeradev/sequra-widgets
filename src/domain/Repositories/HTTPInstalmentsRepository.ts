@@ -26,11 +26,14 @@ export class HTTPInstalmentsRepository implements InstalmentsRepository {
 
     try {
       const response = await fetch(url)
-      const data: InstalmentOption[] = await response.json()
+      const data: InstalmentOption[] | null = await response.json()
 
-      return ListInstalmentValueObject.create({
-        instalments: data,
-      })
+      return (
+        data &&
+        ListInstalmentValueObject.create({
+          instalments: data,
+        })
+      )
     } catch (err) {
       console.error('Error in HTTPInstalmentsRepository.getCreditAgreements:', err)
       return null
