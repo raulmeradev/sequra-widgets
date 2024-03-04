@@ -1,6 +1,25 @@
+import { useState } from 'react'
+import { InstalmentsSelector } from './components/InstalmentsSelector/index'
 import './index.css'
 
+type PhoneModel = {
+  capacity: number
+  price: number
+}
+
+const CAPACITY_PRICES: PhoneModel[] = [
+  { capacity: 128, price: 399.99 },
+  { capacity: 256, price: 450 },
+]
+
 function App() {
+  const [selected, setSelected] = useState<PhoneModel>(CAPACITY_PRICES[0])
+  const [quantity, setQuantity] = useState(1)
+  const totalAmount = selected.price * quantity
+
+  const decrement = () => quantity > 1 && setQuantity(v => v - 1)
+  const increment = () => setQuantity(v => v + 1)
+
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -136,7 +155,7 @@ function App() {
             </div>
 
             <p id="product-price" className="text-4xl tracking-tight text-gray-900">
-              399,99 €
+              {selected.price.toFixed(2).replace('.', ',')} €
             </p>
 
             <div className="form mt-8">
@@ -188,13 +207,17 @@ function App() {
                 <fieldset className="mt-4">
                   <legend className="sr-only">Choose a capacity</legend>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-                    <label className="product-capacity relative flex items-center justify-center rounded-md border py-2 px-2 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-4 cursor-pointer bg-white text-gray-900 ring ring-green-500">
-                      <span data-price="399,99 €">128 GB</span>
-                    </label>
-
-                    <label className="product-capacity relative flex items-center justify-center rounded-md border py-2 px-2 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-4 cursor-pointer bg-white text-gray-90 ring-green-500">
-                      <span data-price="450,00 €">256 GB</span>
-                    </label>
+                    {CAPACITY_PRICES.map(item => (
+                      <label
+                        key={item.capacity}
+                        onClick={() => setSelected(item)}
+                        className={`product-capacity relative flex items-center justify-center rounded-md border py-2 px-2 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-4 cursor-pointer bg-white text-gray-900 ring-green-500 ${
+                          selected.capacity === item.capacity ? 'ring' : ''
+                        }`}
+                      >
+                        <span data-price={`${item.price.toFixed(2)} €`}>{item.capacity} GB</span>
+                      </label>
+                    ))}
                   </div>
                 </fieldset>
               </div>
@@ -203,21 +226,24 @@ function App() {
                 <label htmlFor="custom-input-number" className="w-full text-gray-700 text-sm font-semibold">
                   Quantity
                 </label>
-                <div className="mt-4 flex flex-row h-10 w-full rounded-md border overflow-hidden relative bg-transparent mt-1 bg-white text-gray-900 shadow-sm">
+                <div className="mt-4 flex flex-row h-10 w-full rounded-md border overflow-hidden relative bg-transparent bg-white text-gray-900 shadow-sm">
                   <div
                     data-action="decrement"
                     className="btn-decrement flex align-center text-gray-700 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer"
+                    onClick={decrement}
                   >
                     <span className="m-auto text-xl font-normal">-</span>
                   </div>
                   <input
                     className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black hover:bg-gray-100 focus:text-black  md:text-basecursor-default flex items-center text-gray-700"
                     name="custom-input-number"
-                    defaultValue="1"
+                    value={quantity}
+                    readOnly
                   ></input>
                   <div
                     data-action="increment"
                     className="btn-increment flex align-center hover:text-gray-700 hover:bg-gray-100 h-full w-20 cursor-pointer"
+                    onClick={increment}
                   >
                     <span className="m-auto text-xl font-normal">+</span>
                   </div>
@@ -226,10 +252,12 @@ function App() {
 
               <button
                 type="submit"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-900 py-3 px-8 text-base font-medium text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
+                className="mt-10 mb-10 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-900 py-3 px-8 text-base font-medium text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
               >
                 Add to bag
               </button>
+
+              <InstalmentsSelector credit={totalAmount} />
             </div>
 
             <div className="mt-10">
