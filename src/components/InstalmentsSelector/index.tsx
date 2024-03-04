@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { InstalmentOption } from '../../domain/types'
 import { getInstalmentsForCreditUseCase, saveUserEventUseCase } from '../../domain'
 import { InstalmentList } from './InstalmentList'
 import { InstalmentsInfoModal } from '../InstalmentsInfoModal'
 
-type InstalmentsSelectorProps = {
+export type InstalmentsSelectorProps = {
   credit: number
+  root?: string
 }
 
-export const InstalmentsSelector: React.FC<InstalmentsSelectorProps> = ({ credit }: InstalmentsSelectorProps) => {
+export const InstalmentsSelector: React.FC<InstalmentsSelectorProps> = ({ credit, root }: InstalmentsSelectorProps) => {
   const [instalments, setInstalments] = useState<InstalmentOption[]>([])
   const [selection, setSelection] = useState<InstalmentOption>()
   const [showInfo, setShowInfo] = useState(false)
@@ -38,7 +40,7 @@ export const InstalmentsSelector: React.FC<InstalmentsSelectorProps> = ({ credit
     fetchData()
   }, [credit])
 
-  return (
+  const content = (
     <div className="border-blue-950 text-blue-950 border rounded p-5 h-32">
       <div className="flex justify-between pb-2 text-base font-medium">
         <span>Págalo en</span>
@@ -54,4 +56,6 @@ export const InstalmentsSelector: React.FC<InstalmentsSelectorProps> = ({ credit
       {showInfo && <InstalmentsInfoModal formattedFee={moreInfoFee?.string} onClose={onMoreInfoClose} />}
     </div>
   )
+
+  return root ? createPortal(content, document.getElementById(root)!) : content
 }
