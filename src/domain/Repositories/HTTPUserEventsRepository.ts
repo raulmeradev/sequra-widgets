@@ -24,7 +24,11 @@ export class HTTPUserEventsRepository implements UserEventsRepository {
     const params = userEvent.serialize()
 
     try {
-      const response = await fetch(url, { method: 'POST', body: JSON.stringify(params) })
+      const response = await fetch(url, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify(params),
+      })
       return response.status === 200
     } catch (err) {
       console.error('Error in HTTPUserEventsRepository.saveUserEvent:', err)

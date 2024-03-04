@@ -25,7 +25,7 @@ export class HTTPInstalmentsRepository implements InstalmentsRepository {
     url.searchParams.set('totalWithTax', `${credit * 100}`)
 
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, { headers: { 'Content-Type': 'application/json' } })
       const data: InstalmentOption[] | null = await response.json()
 
       return (
